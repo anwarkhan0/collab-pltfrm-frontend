@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Nav, Button, Container, Table, Row, Col, Form, InputGroup, Spinner } from 'react-bootstrap';
+import { Nav, Button, Container, Table, Row, Col, Form, InputGroup, Spinner } from 'react-bootstrap';
 
 
 const DocumentRoom = () => {
@@ -30,22 +30,6 @@ const DocumentRoom = () => {
 
   return (
     <>
-      {/* Navbar */}
-      <Navbar style={{ backgroundColor: '#007bff' }} variant="dark" expand="lg">
-        <Container>
-          <Navbar.Brand href="#home">CollabPlatform</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#dashboard">Dashboard</Nav.Link>
-              <Nav.Link href="#documents">Documents</Nav.Link>
-              <Nav.Link href="#projects">Projects</Nav.Link>
-            </Nav>
-            <Button variant="outline-light" href="#upload">Upload Document</Button>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
       {/* Search and Upload Section */}
       <Container className="py-4">
         <Row className="mb-4">
