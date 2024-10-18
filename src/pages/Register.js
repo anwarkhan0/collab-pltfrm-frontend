@@ -3,8 +3,7 @@ import { Container, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -22,7 +21,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Basic validation
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
       setError('Please fill in all fields');
       return;
     }
@@ -34,6 +33,29 @@ const Register = () => {
     console.log('Registration attempt with:', formData);
     setError('');
     // Proceed with registration logic
+    // Send form data to server
+    fetch('http://localhost:4000/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Registration failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Registration successful:', data);
+        // Redirect to login page after successful registration
+          window.location.href = '/login';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setError('Registration failed. Please try again.');
+      });
   };
 
   return (
@@ -44,24 +66,13 @@ const Register = () => {
             <h2 className="mb-3 text-center">Register</h2>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="formFirstName">
-                <Form.Label>First Name</Form.Label>
+              <Form.Group className="mb-3" controlId="Name">
+                <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="text"
-                  name="firstName"
-                  placeholder="Enter first name"
+                  name="name"
+                  placeholder="Enter name"
                   value={formData.firstName}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formLastName">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="lastName"
-                  placeholder="Enter last name"
-                  value={formData.lastName}
                   onChange={handleChange}
                 />
               </Form.Group>

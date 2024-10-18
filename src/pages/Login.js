@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Form, Button, Alert, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useAuth, login } from '../components/AuthContext';
 
 const Login = () => {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const [error, setErorr] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically handle the login logic
-    // For example, calling an API or authenticating the user
-    console.log('Login attempt with:', { email, password });
-    // For demonstration, let's just show an error if fields are empty
-    if (!email || !password) {
-      setError('Please fill in all fields');
-    } else {
-      setError('');
-      // Proceed with login logic
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (!email || !password) {
+        setErorr('Please provide all inputs.')
+        return;
+      }
+      await login(email, password);
+      if(login.status == 201){
+        navigate('/dashboard');  // Redirect to dashboard after login 
+      }else{
+        setErorr('Login failed.')
+      }
+      
+      
+    } catch (err) {
+      setErorr(err.message);
     }
   };
 
